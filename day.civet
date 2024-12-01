@@ -1,0 +1,48 @@
+fs from fs
+path from path
+axios from axios
+dotenv from dotenv
+process from process
+
+dotenv.config()
+
+unless process.env.SESSION
+  console.error 'Error: SESSION environment variable not set'
+  process.exit 1
+
+unless process.env.YEAR
+  console.error 'Error: YEAR environment variable not set'
+  process.exit 1
+
+unless process.argv.2
+  console.error 'Error: day number not provided'
+  process.exit 1
+
+dirName := process.argv.2.padStart 2, '0'
+dirPath := path.join process.cwd(), 'src', dirName
+
+unless fs.existsSync dirPath
+  fs.mkdirSync dirPath, recursive: true
+
+indexPath := path.join dirPath, 'index.civet'
+unless fs.existsSync indexPath
+  fs.writeFileSync indexPath, ''
+  console.log `✅ ${indexPath}`
+
+storyPath := path.join dirPath, 'story.md'
+unless fs.existsSync storyPath
+  fs.writeFileSync storyPath, ''
+  console.log `✅ ${storyPath}`
+
+day := parseInt dirName
+year := parseInt process.env.YEAR 
+
+{ data } := await axios.get `https://adventofcode.com/${year}/day/${day}/input`,
+  headers:
+    Cookie: `session=${process.env.SESSION}`
+
+fs.writeFileSync
+  path.join(dirPath, 'input.txt'),
+  data
+
+console.log `✅ ${dirName}/input.txt`
