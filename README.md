@@ -17,3 +17,17 @@ log 'Part 1', for sum i in left
 log 'Part 2', for sum i in left
   left[i] * counter(right)[left[i]]
 ```
+
+## Day 2: Red-Nosed Reports ⭐⭐
+
+```ts
+reports := input |> getLines |> .map toNumbers
+
+function isSafe (report: number[])
+  isAsc := report.1 - report.0 > 0
+  for every i of [0...report# - 1]
+    (1 <= report[i + int isAsc] - report[i + int !isAsc] <= 3)
+ 
+log 'Part 1', reports.filter(isSafe)#
+log 'Part 2', reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
+```

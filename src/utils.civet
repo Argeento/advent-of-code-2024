@@ -138,11 +138,17 @@ export function isPoint3d (arg: any): arg is Point3d
 export function log (...args: any[]): void
   console.log ...args
 
-export function int (nr: string): number
-  parseInt nr
+export function int (nr: string | boolean): number
+  if typeof nr == 'string'
+    parseInt nr
+  else
+    +nr
 
-export function float (nr: string): number
-  parseFloat nr
+export function float (nr: string | boolean): number
+  if typeof nr == 'string'
+    parseFloat nr
+  else
+    +nr
 
 export function multiply(arr: number[]): number
   arr.reduce (a, b) => a * b
