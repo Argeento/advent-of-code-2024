@@ -1,0 +1,5 @@
+mul := multiply
+calc := (s: string) => sum s.match(/mul\(\d+,\d+\)/g)!map eval .
+
+log calc input
+log sum input.match(/(^|do\(\))[\s\S]*?($|don't\(\))/g)!map calc
