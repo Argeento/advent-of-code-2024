@@ -11,10 +11,10 @@ My solutions to the [AoC 2024](https://adventofcode.com/2024) challenges written
   |> rotate
   |> .map .sort asc
 
-log 'Part 1', for sum i in left
+log for sum i in left
   abs left[i] - right[i]
 
-log 'Part 2', for sum i in left
+log for sum i in left
   left[i] * counter(right)[left[i]]
 ```
 
@@ -28,6 +28,16 @@ function isSafe (report: number[])
   for every i of [0...report# - 1]
     (1 <= report[i + int isAsc] - report[i + int !isAsc] <= 3)
  
-log 'Part 1', reports.filter(isSafe)#
-log 'Part 2', reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
+log reports.filter(isSafe)#
+log reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
+```
+
+## Day 3: Mull It Over ⭐⭐
+
+```ts
+mul := multiply
+calc := (s: string) => sum s.match(/mul\(\d+,\d+\)/g)!map eval .
+
+log calc input
+log sum input.match(/(^|do\(\))[\s\S]*?($|don't\(\))/g)!map calc
 ```
