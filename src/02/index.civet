@@ -5,5 +5,5 @@ function isSafe (report: number[])
   for every i of [0...report# - 1]
     (1 <= report[i + int isAsc] - report[i + int !isAsc] <= 3)
  
-log 'Part 1', reports.filter(isSafe)#
-log 'Part 2', reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
+log reports.filter(isSafe)#
+log reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
