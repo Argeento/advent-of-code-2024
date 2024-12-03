@@ -4,8 +4,8 @@
   |> rotate
   |> .map .sort asc
 
-log 'Part 1', for sum i in left
+log for sum i in left
   abs left[i] - right[i]
 
-log 'Part 2', for sum i in left
+log for sum i in left
   left[i] * counter(right)[left[i]]
