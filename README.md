@@ -41,3 +41,23 @@ calc := (s: string) => sum s.match(/mul\(\d+,\d+\)/g)!map eval .
 log calc input
 log sum input.match(/(^|do\(\))[\s\S]*?($|don't\(\))/g)!map calc
 ```
+
+## Day 4: Ceres Search ⭐⭐
+
+```ts
+puzzle := getArray2d input
+dirs := flatten for x of [-1..1]
+  for y of [-1..1]
+    for l of [1..3]
+      [x * l, y * l]
+
+log sumLoop2d puzzle, (y, x, char) =>
+  return 0 unless char is 'X'
+  sum dirs.map (dir) =>
+    dir.map([dx, dy] => puzzle[y + dy]?[x + dx]).join('') is 'MAS'
+
+log sumLoop2d puzzle, (y, x, char) =>
+  return 0 unless char is 'A'
+  puzzle[y - 1]?[x - 1] + puzzle[y + 1]?[x + 1] is in ['MS', 'SM'] and
+  puzzle[y - 1]?[x + 1] + puzzle[y + 1]?[x - 1] is in ['MS', 'SM']
+```

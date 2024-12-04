@@ -51,6 +51,14 @@ export function loop2d<T>(
     for x of [0...array[y]!.length]
       callback y, x, array[y]![x]!
 
+export function sumLoop2d<T>(
+  array: T[][],
+  callback: (y: number, x: number, item: T) => Parameters<typeof int>[0]
+): number
+  for sum y of [0...array.length]
+    for sum x of [0...array[y]!.length]
+      int callback y, x, array[y]![x]!
+
 export function toNumber(str: string): number 
   +(str.match(/\-?\d+((.|,)\d+)?/)?.[0] or '')
 
@@ -138,13 +146,13 @@ export function isPoint3d (arg: any): arg is Point3d
 export function log (...args: any[]): void
   console.log ...args
 
-export function int (nr: string | boolean): number
+export function int (nr: string | boolean | number): number
   if typeof nr == 'string'
     parseInt nr
   else
     +nr
 
-export function float (nr: string | boolean): number
+export function float (nr: string | boolean | number): number
   if typeof nr == 'string'
     parseFloat nr
   else
