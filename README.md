@@ -61,3 +61,17 @@ log sumLoop2d puzzle, (y, x, char) =>
   puzzle[y - 1]?[x - 1] + puzzle[y + 1]?[x + 1] is in ['MS', 'SM'] and
   puzzle[y - 1]?[x + 1] + puzzle[y + 1]?[x - 1] is in ['MS', 'SM']
 ```
+
+## Day 5: Print Queue ⭐⭐
+
+```ts
+[rules, updates] := input.split('\n\n').map(getLines).map .map toNumbers
+
+sumMiddles := (arr: number[][]) => sum arr.map &[&.#/2 | 0]
+isCorrect := (update: number[]) => for every i of [0...update.#-1]
+  rules.some matches update[i..i+1]
+
+log sumMiddles updates.filter isCorrect
+log sumMiddles updates.filter(negate isCorrect).map .sort (a, b) =>
+  -rules.some matches [b, a]
+```
