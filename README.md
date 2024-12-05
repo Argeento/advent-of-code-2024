@@ -5,11 +5,7 @@ My solutions to the [AoC 2024](https://adventofcode.com/2024) challenges written
 ## Day 1: Historian Hysteria ⭐⭐
 
 ```ts
-[left, right] := input
-  |> getLines
-  |> .map toNumbers
-  |> rotate
-  |> .map .sort asc
+[left, right] := getLines(input).map toNumbers |> rotate |> .map .sort asc
 
 log for sum i in left
   abs left[i] - right[i]

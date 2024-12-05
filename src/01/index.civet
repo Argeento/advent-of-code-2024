@@ -1,8 +1,4 @@
-[left, right] := input
-  |> getLines
-  |> .map toNumbers
-  |> rotate
-  |> .map .sort asc
+[left, right] := getLines(input).map toNumbers |> rotate |> .map .sort asc
 
 log for sum i in left
   abs left[i] - right[i]
