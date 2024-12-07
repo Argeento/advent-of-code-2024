@@ -191,3 +191,10 @@ export function findInArray2d<T>(arr: T[][], value: T): Point | null
       if (arr[y][x] === value)
         return { x, y }
   null
+
+export function getPerms(chars: string, length?: number): string[]
+  length ?= chars.length
+  return [''] if length <= 0
+  flatten for combo of getPerms chars, length - 1
+    for ch of chars
+      combo + ch

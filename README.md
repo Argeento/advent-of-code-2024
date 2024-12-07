@@ -101,3 +101,21 @@ log for sum pos of visited
   tmp := set cloneDeep(board), pos, '#'
   simulate tmp, start |> .loop |> int
 ```
+
+## Day 7: Bridge Repair ⭐⭐
+
+```ts
+lines := getLines(input).map(toNumbers).map [&.0, &[1..]] as const
+
+calc := (operators: string) => sum lines.map [test, values] =>
+  test if for some perm of getPerms operators, values.#-1
+    x .= values.0
+    for op, i of perm
+      x += values[i+1] if op is '+'
+      x *= values[i+1] if op is '*'
+      x = +`${x}${values[i+1]}` if op is '|'
+    test is x
+
+log calc '+*'
+log calc '+*|'
+```
