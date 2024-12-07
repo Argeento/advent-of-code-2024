@@ -184,3 +184,10 @@ export function rotateClockwise<T>(arr: T[][]): T[][]
 
 export function abs(nr: number): number
   Math.abs nr
+
+export function findInArray2d<T>(arr: T[][], value: T): Point | null
+  for (let y = 0; y < arr.length; y++)
+    for (let x = 0; x < arr[y].length; x++)
+      if (arr[y][x] === value)
+        return { x, y }
+  null

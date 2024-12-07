@@ -71,3 +71,33 @@ log sumMiddles updates.filter isCorrect
 log sumMiddles updates.filter(negate isCorrect).map .sort (a, b) =>
   -rules.some matches [b, a]
 ```
+
+## Day 6: Guard Gallivant ⭐⭐
+
+```ts
+board := getArray2d input
+start := findInArray2d board, '^' |> as Point
+
+simulate := (board: string[][], { x, y }: Point, dir = 0) =>
+  visited := new Set [`${y}.${x}`]
+  positions := new Set [`${y}.${x}.${dir}`]
+
+  loop
+    board[y - 1]?[x] is '#' ? dir = 1 : y-- if dir is 0
+    board[y]?[x + 1] is '#' ? dir = 2 : x++ if dir is 1
+    board[y + 1]?[x] is '#' ? dir = 3 : y++ if dir is 2
+    board[y]?[x - 1] is '#' ? dir = 0 : x-- if dir is 3
+
+    break with { visited, -loop } unless board[y]?[x]
+    break with { visited, +loop } if positions.has `${y}.${x}.${dir}`
+
+    visited.add `${y}.${x}`
+    positions.add `${y}.${x}.${dir}`
+
+{ visited } := simulate board, start
+
+log visited.size
+log for sum pos of visited
+  tmp := set cloneDeep(board), pos, '#'
+  simulate tmp, start |> .loop |> int
+```
