@@ -7,11 +7,8 @@ My solutions to the [AoC 2024](https://adventofcode.com/2024) challenges written
 ```ts
 [left, right] := getLines(input).map toNumbers |> rotate |> .map .sort asc
 
-log for sum i in left
-  abs left[i] - right[i]
-
-log for sum i in left
-  left[i] * counter(right)[left[i]]
+log sum left.map (x, i) => abs x - right[i]
+log sum left.map & * counter(right)[&]
 ```
 
 ## Day 2: Red-Nosed Reports ⭐⭐
