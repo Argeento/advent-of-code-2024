@@ -212,3 +212,12 @@ export function getPerms<T>(elements: T[], length?: number): T[][]
       result.push [...combo, el]
 
   result
+
+export function addVector(point: Point, vector: Point): Point
+  { x: point.x + vector.x, y: point.y + vector.y }
+
+export function subVector(point: Point, vector: Point): Point
+  { x: point.x - vector.x, y: point.y - vector.y }
+  
+export function len(arr: any[])
+  arr#

@@ -105,7 +105,7 @@ log for sum pos of visited
 lines := getLines(input).map(toNumbers).map [&.0, &[1..]] as const
 
 calc := (operators: string) => sum lines.map [test, values] =>
-  test if for some perm of getPerms operators, values.#-1
+  test if for some perm of getPerms [...operators], values.#-1
     x .= values.0
     for op, i of perm
       x += values[i+1] if op is '+'
@@ -115,4 +115,25 @@ calc := (operators: string) => sum lines.map [test, values] =>
 
 log calc '+*'
 log calc '+*|'
+```
+
+## Day 8: Resonant Collinearity ⭐⭐
+
+```ts
+city := getArray2d input
+isInCity := (p: Point) => 0 <= p.x < city# and 0 <= p.y < city#
+pairs := uniq input.replace /\n|\./g, ''
+  |> .map findAllInArray2d city, .
+  |> .flatMap getPerms(., 2).filter &.0 is not &.1
+
+log len uniq pairs.flatMap [p1, p2] =>
+  p := subVector p1, subVector p2, p1
+  if isInCity p then [`${p.x},${p.y}`] else []
+
+log len uniq pairs.flatMap [p1, p2] =>
+  points := [addVector p1, subVector p2, p1]
+  loop
+    p := addVector points.-1, subVector p2, p1
+    if isInCity p then points.push p else break
+  points.map `${&.x},${&.y}`
 ```
