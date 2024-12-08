@@ -21,8 +21,8 @@ function isSafe (report: number[])
   for every i of [0...report# - 1]
     (1 <= report[i + int isAsc] - report[i + int !isAsc] <= 3)
  
-log reports.filter(isSafe)#
-log reports.filter((r) => r.some (_, i) => isSafe r.toSpliced i, 1)#
+log len reports.filter isSafe
+log len reports.filter (r) => r.some (_, i) => isSafe r.toSpliced i, 1
 ```
 
 ## Day 3: Mull It Over ⭐⭐
