@@ -192,9 +192,23 @@ export function findInArray2d<T>(arr: T[][], value: T): Point | null
         return { x, y }
   null
 
-export function getPerms(chars: string, length?: number): string[]
-  length ?= chars.length
-  return [''] if length <= 0
-  flatten for combo of getPerms chars, length - 1
-    for ch of chars
-      combo + ch
+export function findAllInArray2d<T>(arr: T[][], value: T): Point[]
+  points := [] as Point[]
+  for y of [0...arr.length]
+    for x of [0...arr[y]!.length]
+      if arr[y]![x] is value
+        points.push { x, y }
+  points
+
+export function getPerms<T>(elements: T[], length?: number): T[][]
+  length ?= elements.length
+  return [[]] if length <= 0
+
+  shorterCombinations := getPerms elements, length - 1
+  result: T[][] := []
+
+  for combo of shorterCombinations
+    for el of elements
+      result.push [...combo, el]
+
+  result

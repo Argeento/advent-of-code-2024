@@ -1,7 +1,7 @@
 lines := getLines(input).map(toNumbers).map [&.0, &[1..]] as const
 
 calc := (operators: string) => sum lines.map [test, values] =>
-  test if for some perm of getPerms operators, values.#-1
+  test if for some perm of getPerms [...operators], values.#-1
     x .= values.0
     for op, i of perm
       x += values[i+1] if op is '+'
