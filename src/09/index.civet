@@ -1,0 +1,31 @@
+disk := map input, int
+id .= 0
+files: [string, string][] := []
+blocks .= for join d, i of disk
+  if i % 2
+    '.'.repeat d  
+  else
+    file := String.fromCodePoint(256 + id++).repeat d
+    files.unshift [file, '.'.repeat file#]
+    file
+
+compactBlocks := (blocks: string) =>
+  while '.' is in blocks 
+    last := blocks.-1
+    blocks = blocks[..-2]
+    blocks = blocks.replace '.', last unless last is '.'
+  blocks
+
+compactFiles := (blocks: string) =>
+  for [file, space] of files
+    fileIndex := blocks.indexOf file
+    spaceIndex := blocks.indexOf space
+    if spaceIndex < fileIndex and spaceIndex > -1
+      blocks = blocks[...spaceIndex] + file + blocks[spaceIndex + file#...fileIndex] + space + blocks[fileIndex + file#..]
+  blocks
+
+checksum := (blocks: string) => sum for block, i of blocks
+  block is '.' or i * (block.codePointAt(0)! - 256)
+
+log checksum compactBlocks blocks
+log checksum compactFiles blocks

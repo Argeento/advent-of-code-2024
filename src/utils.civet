@@ -146,15 +146,19 @@ export function isPoint3d (arg: any): arg is Point3d
 export function log (...args: any[]): void
   console.log ...args
 
-export function int (nr: string | boolean | number): number
+export function int (nr?: string | boolean | number): number
   if typeof nr == 'string'
     parseInt nr
+  else if nr === undefined
+    0
   else
     +nr
 
-export function float (nr: string | boolean | number): number
+export function float (nr?: string | boolean | number): number
   if typeof nr == 'string'
     parseFloat nr
+  else if nr === undefined
+    0
   else
     +nr
 
