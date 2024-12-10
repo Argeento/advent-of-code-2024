@@ -3,10 +3,10 @@ export function getLines<T extends string>(input: string): T[]
   lines.pop() if lines.-1 is ''
   lines as T[]
 
-export function getNumbers(input: string): number[]
+export function getNumbers(input: string, splitBy = ','): number[]
   lines := getLines input
   lines.length is 1
-    ? lines.0.split ',' |> .map +&
+    ? lines.0.split splitBy |> .map +&
     : lines.map +&
 
 export function getArray2d<T extends string>(
@@ -83,37 +83,56 @@ export function getLcm(a: number | number[], b?: number): number
 
 export function adjacentPoints<T>(arr: T[][], x: number, y: number)
   [
-    item: arr[y - 1]?.[x]
+    value: arr[y - 1]?.[x]
     x: x,
     y: y - 1
   ,
-    item: arr[y - 1]?.[x + 1]
+    value: arr[y - 1]?.[x + 1]
     x: x + 1,
     y: y - 1
   ,
-    item: arr[y - 1]?.[x - 1]
+    value: arr[y - 1]?.[x - 1]
     x: x - 1,
     y: y - 1
   ,
-    item: arr[y + 1]?.[x]
+    value: arr[y + 1]?.[x]
     x: x,
     y: y + 1
   ,
-    item: arr[y + 1]?.[x + 1]
+    value: arr[y + 1]?.[x + 1]
     x: x + 1,
     y: y + 1
   ,
-    item: arr[y + 1]?.[x - 1]
+    value: arr[y + 1]?.[x - 1]
     x: x - 1,
     y: y + 1
   ,
-    item: arr[y][x - 1]
+    value: arr[y][x - 1]
     x: x - 1,
     y: y
   ,
-    item: arr[y][x + 1]
+    value: arr[y][x + 1]
     x: x + 1,
     y: y
+  ]
+
+export function adjacentCross<T>(arr: T[][], x: number, y: number)
+  [
+    value: arr[y]?[x - 1]
+    x: x - 1,
+    y: y
+  ,
+    value: arr[y]?[x + 1]
+    x: x + 1,
+    y: y
+  ,
+    value: arr[y - 1]?[x]
+    x: x,
+    y: y - 1
+  , 
+    value: arr[y + 1]?[x]
+    x: x,
+    y: y + 1
   ]
 
 export function toKeys<Item, Key extends string>(...keys: Key[])

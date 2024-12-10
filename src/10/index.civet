@@ -1,0 +1,11 @@
+grid := getArray2d input |> .map .map int
+heads := findAllInArray2d grid, 0
+
+function move ({ x, y }: Point): string[]
+  return [`${x},${y}`] if grid[y][x] is 9
+  adjacentCross grid, x, y
+    .filter &.value is grid[y][x] + 1
+    .flatMap move .
+
+log sum heads.map (head) => len uniq move head
+log sum heads.map (head) => len      move head
