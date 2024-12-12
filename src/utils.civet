@@ -1,3 +1,7 @@
+memoize from memoizee
+
+export const memo = memoize
+
 export function getLines<T extends string>(input: string): T[]
   lines := input.split '\n'
   lines.pop() if lines.-1 is ''

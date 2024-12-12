@@ -42,6 +42,8 @@ function getExports(source: string) {
     exports.push(match[1] || match[2]);
   }
 
+  exports.push('memo');
+
   return exports;
 }
 

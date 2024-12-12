@@ -189,3 +189,19 @@ function move ({ x, y }: Point): string[]
 log sum heads.map (head) => len uniq move head
 log sum heads.map (head) => len      move head
 ```
+
+## Day 11: Plutonian Pebbles ⭐⭐
+
+```ts
+stones .= toNumbers input
+
+blink := memo (stone: number, blinks: number): number =>
+  str := stone.toString()
+  unless blinks-- then 1
+  else if stone is 0 then blink 1, blinks 
+  else if str# % 2 is 0 then blink(+str[...str#/2], blinks) + blink(+str[str#/2..], blinks)
+  else blink stone * 2024, blinks
+
+log sum map stones, blink ., 25
+log sum map stones, blink ., 75
+```
