@@ -246,3 +246,14 @@ map2d garden, (x, y, value) =>
 
 log p1, p2
 ```
+
+## Day 13: Claw Contraption ⭐⭐
+
+```ts
+machines := chunk toNumbers(input), 6
+tokens := ([a, b, c, d, e, f]: number[]) =>
+  (d*e-c*f) / (a*d-c*b) * 3 + (a*f-b*e) / (a*d-c*b) |> & % 1 ? 0 : &
+
+log sum machines.map tokens
+log sum machines.map(&[..3] ++ &[-2..].map &+1e13).map tokens
+```
