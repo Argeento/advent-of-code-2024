@@ -1,0 +1,36 @@
+garden := getArray2d input
+visited := new Set<string>
+type Edge = [Point, Point]
+
+findRegion := ({x, y}: Point, type: string, edges: Edge[] = []): [number, number, string, Edge[]] => 
+  perimeter .= 0
+  area .= 1
+  key := `${x},${y}`
+  if visited.has(key) return [0, 0, type, edges] else visited.add key
+  for p of adjacentCross garden, x, y
+    if p.value is type
+      [nextArea, nextPerimeter] := findRegion p, type, edges
+      area += nextArea
+      perimeter += nextPerimeter
+    else 
+      edges.push [{x, y}, p]
+      perimeter++
+  [area, perimeter, type, edges]
+
+calcSides := (edges: Edge[]) =>
+  v := edges.filter &.0.x is &.1.x |> groupBy ., &.0.y + &.1.y * 2 |> values |> .map (a) => countAsc a.map &.0.x
+  h := edges.filter &.0.y is &.1.y |> groupBy ., &.0.x + &.1.x * 2 |> values |> .map (a) => countAsc a.map &.0.y
+  sum v ++ h
+
+countAsc := (arr: number[]) =>
+  sum for i of [0...arr.sort(asc)#]
+    arr[i] + 1 is not arr[i + 1]
+
+p1 .= 0
+p2 .= 0
+map2d garden, (x, y, value) =>
+  [area, perimeter, _, edges ] := findRegion({x, y}, value)
+  p1 += area * perimeter
+  p2 += area * calcSides edges
+
+log p1, p2

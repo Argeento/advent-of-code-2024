@@ -61,7 +61,17 @@ export function sumLoop2d<T>(
 ): number
   for sum y of [0...array.length]
     for sum x of [0...array[y]!.length]
-      int callback y, x, array[y]![x]!
+      int callback x, y, array[y]![x]!
+
+export function map2d<T, U>(
+  array: T[][],
+  callback: (y: number, x: number, item: T) => U
+): U[]
+  elements: U[] := []
+  for y of [0...array.length]
+    for x of [0...array[y]!.length]
+      elements.push callback x, y, array[y]![x]!
+  elements
 
 export function toNumber(str: string): number 
   +(str.match(/\-?\d+((.|,)\d+)?/)?.[0] or '')
@@ -233,7 +243,6 @@ export function getPerms<T>(elements: T[], length?: number): T[][]
 
   shorterCombinations := getPerms elements, length - 1
   result: T[][] := []
-
   for combo of shorterCombinations
     for el of elements
       result.push [...combo, el]
