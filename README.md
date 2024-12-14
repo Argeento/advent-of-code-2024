@@ -257,3 +257,30 @@ tokens := ([a, b, c, d, e, f]: number[]) =>
 log sum machines.map tokens
 log sum machines.map(&[..3] ++ &[-2..].map &+1e13).map tokens
 ```
+
+## Day 14: Restroom Redoubt ⭐⭐
+
+```ts
+start := chunk toNumbers(input), 4
+getRobots := (t: number) => start.map [x0, y0, vx, vy] =>
+  . (x0 + vx * t) %% 101
+  . (y0 + vy * t) %% 103
+
+quadrants:= [0, 0, 0, 0]
+getRobots(100).forEach [x, y] =>
+  quadrants.0++ if x < 50 and y < 51
+  quadrants.1++ if x < 50 and y > 51
+  quadrants.2++ if x > 50 and y < 51
+  quadrants.3++ if x > 50 and y > 51
+
+log product quadrants
+
+for t of [0...10000]
+  robots := getRobots t
+  for y of [0...103]
+    line := '.'.repeat(101).split ''
+    robotsInLine := robots.filter(&.1 is y).map &.0
+    for x of [0..101]
+      line[x] = '#' if x is in robotsInLine 
+    throw t if '###########' is in line.join ''
+```
