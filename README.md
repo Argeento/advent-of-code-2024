@@ -284,3 +284,77 @@ for t of [0...10000]
       line[x] = '#' if x is in robotsInLine 
     throw t if '###########' is in line.join ''
 ```
+
+## Day 15: Warehouse Woes ⭐⭐
+
+```ts
+data := input.split '\n\n'
+moves := data.1.replaceAll '\n', ''
+grid1 := getArray2d data.0
+grid2 := getLines(data.0).map (line) =>
+  line.replaceAll('#','##').replaceAll('.','..').replaceAll('O','[]').replace('@', '@.').split ''
+
+getNextPoint := (p: Point, move: string) =>
+  switch move
+    '>' then x: p.x + 1, y: p.y
+    '<' then x: p.x - 1, y: p.y
+    '^' then x: p.x, y: p.y - 1
+    else x: p.x, y: p.y + 1
+
+nextP1 := (p: Point, move: string) =>
+  n := getNextPoint(p, move)
+  return false if grid1[n.y]![n.x] is '#'
+  if grid1[n.y]![n.x] is '.' or grid1[n.y]![n.x] is 'O' and nextP1 n, move
+    grid1[n.y]![n.x] = grid1[p.y]![p.x]
+    grid1[p.y]![p.x] = '.'
+    return true
+
+nextP2 := (p: Point, move: string) =>
+  n := getNextPoint(p, move)
+  return false if grid2[n.y]![n.x] is '#'
+  
+  if grid2[n.y]![n.x] is '.' or move is in '><' and nextP2 n, move
+    grid2[n.y]![n.x] = grid2[p.y]![p.x]
+    grid2[p.y]![p.x] = '.'
+    return true
+
+  return false if move is not in '^v' or not canMove(n, move)
+
+  dy := move is 'v' ? 1 : -1
+  if grid2[n.y]![n.x] is '[' and canMove({ x: n.x + 1, y: n.y }, move)
+      nextP2 n, move
+      nextP2 { y: n.y, x: n.x + 1}, move
+      grid2[n.y]![n.x] = '@'
+      grid2[n.y]![n.x + 1] = '.'
+      grid2[n.y + dy]![n.x] = '['
+      grid2[n.y + dy]![n.x + 1] = ']'
+      grid2[p.y]![p.x] = '.'
+      return true
+
+  if grid2[n.y]![n.x] is ']' and canMove({ x: n.x - 1, y: n.y }, move)
+      nextP2 n, move
+      nextP2 { y: n.y, x: n.x - 1}, move
+      grid2[n.y]![n.x] = '@'
+      grid2[n.y]![n.x - 1] = '.'
+      grid2[n.y + dy]![n.x] = ']'
+      grid2[n.y + dy]![n.x - 1] = '['
+      grid2[p.y]![p.x] = '.'
+      return true
+
+canMove := (p: Point, move: string) =>
+  n := getNextPoint(p, move)
+  return false if grid2[n.y]![n.x] is '#'
+  return true if grid2[n.y]![n.x] is '.'
+  return true if grid2[n.y]![n.x] is '[' and canMove(n, move) and canMove({ x: n.x + 1, y: n.y }, move)
+  return true if grid2[n.y]![n.x] is ']' and canMove(n, move) and canMove({ x: n.x - 1, y: n.y }, move)
+  
+for move of moves
+  nextP1 findInArray2d(grid1, '@')!, move
+  nextP2 findInArray2d(grid2, '@')!, move
+
+log for sum {x, y} of findAllInArray2d grid1, 'O'
+  x + y * 100
+
+log for sum {x, y} of findAllInArray2d grid2, '['
+  x + y * 100
+```
