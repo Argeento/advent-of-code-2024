@@ -1,0 +1,27 @@
+Graph from graphology
+{ dijkstra } from graphology-library/shortest-path
+
+bytes := chunk toNumbers(input), 2
+
+function findExit(bytes: number[][])
+  graph := new Graph
+  ram := for y of [0..70]
+    for x of [0..70]
+      bytes.find(&.0 is x and &.1 is y) ? '#' : '.'
+
+  map2d ram, (x, y) =>
+    return if ram[y][x] is '#'
+    graph.addNode `${x},${y}`
+
+  map2d ram, (x, y) =>
+    return if ram[y][x] is '#'
+    for p of adjacentCross ram, x, y
+      graph.addEdge `${x},${y}`, `${p.x},${p.y}` if p.value is '.'
+
+  dijkstra.bidirectional graph, '0,0', `70,70`
+
+log findExit(bytes[0...1024])# - 1
+
+i .= 0
+while findExit bytes[0..++i]
+log bytes[i].join()
