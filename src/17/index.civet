@@ -1,0 +1,35 @@
+[A, B, C, ...program] .= toNumbers(input).map BigInt
+
+function execute(A: bigint, B: bigint, C: bigint, program: bigint[])
+  output: bigint[] := []
+  index .= 0
+  combo := (x: bigint) => [0n, 1n, 2n, 3n, A, B, C][Number(x)]
+
+  run := (opcode: bigint, operand: bigint) => switch opcode
+    0n then A = A / 2n ** combo(operand)
+    1n then B ^= operand
+    2n then B = combo(operand) % 8n
+    3n then index = A is 0n ? index + 2 : Number(operand)
+    4n then B ^= C
+    5n then output.push combo(operand) % 8n
+    6n then B = A / 2n ** combo(operand)
+    7n then C = A / 2n ** combo(operand)
+
+  while index < program#
+    opcode := program[index]
+    operand := program[index + 1]
+    run opcode, operand
+    index += 2 unless opcode is 3n
+
+  output
+
+log execute(A, B, C, program).join()
+
+vals .= [0n]
+for opcode of program.toReversed()
+  vals = vals.flatMap (prev) =>
+    [0n, 1n, 2n, 3n, 4n, 5n, 6n, 7n]
+      .map prev * 8n + &
+      .filter (A) => execute(A, 0n, 0n, program).0 is opcode
+
+log min vals
