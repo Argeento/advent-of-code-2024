@@ -358,3 +358,41 @@ log for sum {x, y} of findAllInArray2d grid1, 'O'
 log for sum {x, y} of findAllInArray2d grid2, '['
   x + y * 100
 ```
+
+## Day 16: Reindeer Maze ⭐
+
+```ts
+Graph from graphology
+{ dijkstra } from graphology-library/shortest-path
+
+maze := getArray2d input
+start := findInArray2d(maze, 'S')!
+end := findInArray2d(maze, 'E')!
+graph := new Graph
+
+directions := 
+  . dx: 1, dy: 0
+  . dx: 0, dy: 1
+  . dx: -1, dy: 0
+  . dx: 0, dy: -1
+
+map2d maze, (x, y, value) =>
+  return if value is '#'
+  graph.addNode `${x},${y},${d}` for d of [0..3]
+
+map2d maze, (x, y, value) =>
+  return if value is '#'
+  for d of [0..3]
+    current := `${x},${y},${d}`
+    nx := x + directions[d].dx
+    ny := y + directions[d].dy
+
+    graph.addEdge current, `${nx},${ny},${d}`, weight: 1 if maze[ny]![nx] is not '#'
+    graph.addEdge current, `${x},${y},${(d-1) %% 4}`, weight: 1000
+    graph.addEdge current, `${x},${y},${(d+1) %% 4}`, weight: 1000
+
+log min for i of [0..3]
+  nodes := dijkstra.bidirectional(graph, `${start.x},${start.y},0`, `${end.x},${end.y},${i}`)!
+  for sum i of [0...nodes# - 1]
+    nodes[i].split(',').-1 is nodes[i + 1].split(',').-1 ? 1 : 1000
+```
