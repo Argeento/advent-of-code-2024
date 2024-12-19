@@ -520,3 +520,18 @@ i .= 0
 while findExit bytes[0..++i]
 log bytes[i].join()
 ```
+
+## Day 19: Linen Layout ⭐⭐
+
+```ts
+[data, _, ...designs] := getLines input
+towels := data.split ', '
+
+possibilities := memo (design: string): number =>
+  matches := towels.filter design.startsWith .
+  return int design# is 0 if matches# is 0
+  sum matches.map (match) => possibilities design[match#..]
+
+log sum designs.map(possibilities).map !!&
+log sum designs.map(possibilities)
+```
