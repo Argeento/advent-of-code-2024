@@ -1,1 +1,1 @@
-## Day 16: Reindeer Maze ⭐
+## Day 16: Reindeer Maze ⭐⭐

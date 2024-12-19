@@ -1,4 +1,5 @@
 Graph from graphology
+Heap from heap
 { dijkstra } from graphology-library/shortest-path
 
 maze := getArray2d input
@@ -27,7 +28,58 @@ map2d maze, (x, y, value) =>
     graph.addEdge current, `${x},${y},${(d-1) %% 4}`, weight: 1000
     graph.addEdge current, `${x},${y},${(d+1) %% 4}`, weight: 1000
 
-log min for i of [0..3]
-  nodes := dijkstra.bidirectional(graph, `${start.x},${start.y},0`, `${end.x},${end.y},${i}`)!
+calcCost := (nodes: string[]) => 
   for sum i of [0...nodes# - 1]
     nodes[i].split(',').-1 is nodes[i + 1].split(',').-1 ? 1 : 1000
+
+minCost := min for i of [0..3]
+  calcCost dijkstra.bidirectional(graph, `${start.x},${start.y},0`, `${end.x},${end.y},${i}`)!
+
+type Distances = Record<string, { cost: number, prevNodes: string[] }>
+
+function getDistances(graph: Graph, start: string)
+  distances: Distances := {}
+
+  graph.forEachNode (node) => distances[node] = cost: Infinity, prevNodes: []
+  distances[start].cost = 0
+
+  queue := new Heap<{ node: string, cost: number }> (a, b) => a.cost - b.cost
+  queue.push { cost: 0, node: start }
+
+  until queue.empty()
+    current := queue.pop()!
+    continue if distances[current.node].cost < current.cost
+
+    graph.forEachOutEdge current.node, (_key, attrs, source, target) =>
+      newCost := distances[source].cost + attrs.weight
+      if newCost < distances[target].cost
+        distances[target].cost = newCost
+        distances[target].prevNodes = [source]
+        queue.push { cost: newCost, node: target }
+      else if newCost is distances[target].cost
+        distances[target].prevNodes.push source
+  distances
+
+distances := getDistances graph, `${start.x},${start.y},0`
+
+function recreatePaths(distances: Distances, start: string, end: string): string[][]
+  return [[start]] if start is end
+  paths: string[][] := []
+
+  for node of distances[end].prevNodes
+    subPaths := recreatePaths distances, start, node
+    for subPath of subPaths
+      paths.push subPath ++ [end]
+
+  return paths
+
+log minCost
+
+[0..3]
+  |> .flatMap (dir) => recreatePaths distances, `${start.x},${start.y},0`, `${end.x},${end.y},${dir}`
+  |> .filter (path) => calcCost(path) is minCost
+  |> flatten
+  |> .map .replace /,\d*$/, ''
+  |> new Set
+  |> .size
+  |> log

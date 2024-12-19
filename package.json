@@ -4,6 +4,7 @@
   "devDependencies": {
     "@danielx/civet": "^0.8.16",
     "@types/bun": "^1.1.14",
+    "@types/heap": "^0.2.34",
     "@types/lodash": "^4.17.13",
     "@types/memoizee": "^0.4.11",
     "axios": "^1.7.8",
@@ -16,6 +17,7 @@
   "dependencies": {
     "graphology": "^0.25.4",
     "graphology-library": "^0.8.0",
+    "heap": "^0.2.7",
     "lodash": "^4.17.21",
     "memoizee": "^0.4.17"
   }
