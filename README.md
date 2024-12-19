@@ -516,7 +516,7 @@ function findExit(bytes: number[][])
 
 log findExit(bytes[0...1024])# - 1
 
-i .= 0
+i .= 1024
 while findExit bytes[0..++i]
 log bytes[i].join()
 ```
