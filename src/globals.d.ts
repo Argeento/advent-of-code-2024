@@ -21,6 +21,10 @@ declare global {
   type DeepReadonly<T> = {
     readonly [P in keyof T]: DeepReadonly<T[P]>;
   };
+
+  interface Object {
+    str: `${number},${number}`;
+  }
 }
 
 export {};

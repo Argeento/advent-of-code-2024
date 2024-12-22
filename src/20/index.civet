@@ -1,0 +1,27 @@
+Graph from graphology
+{ dijkstra } from graphology-library/shortest-path
+
+grid := getArray2d input
+start := findInArray2d(grid, 'S')!
+end := findInArray2d(grid, 'E')!
+graph := new Graph
+
+map2d grid, (x, y, value) =>
+  return if value is '#'
+  graph.addNode `${x},${y}`
+
+map2d grid, (x, y, value) =>
+  return if value is '#'
+  for p of adjacentCross grid, x, y
+    continue if grid[p.y]?[p.x] is '#'
+    graph.addEdge `${x},${y}`, p.str
+
+path := dijkstra.bidirectional(graph, start.str, end.str).map toNumbers
+
+function possibleCheats(max: number)
+  flatten for [x, y], i of path
+    for [cx, cy], j of path[i+1..]
+      manhattan {x, y}, {x: cx, y: cy} |> & <= max ? j - & + 1 : 0
+
+log len possibleCheats(2).filter & >= 100
+log len possibleCheats(20).filter & >= 100

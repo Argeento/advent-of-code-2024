@@ -2,6 +2,11 @@ memoize from memoizee
 
 export const memo = memoize
 
+Object.defineProperty(Object.prototype, 'str', {
+  enumerable: false
+  get: -> `${@.x},${@.y}`
+});
+
 export function getLines<T extends string>(input: string): T[]
   lines := input.split '\n'
   lines.pop() if lines.-1 is ''
@@ -28,7 +33,7 @@ export function desc(a: any, b: any): number
 export function inRange(min: number, value: number, max: number): boolean 
   min <= value <= max
 
-export function getManhattanDistance(
+export function manhattan(
   a: Point,
   b: Point = x: 0, y: 0
 ): number
