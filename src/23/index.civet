@@ -1,0 +1,24 @@
+findCliques from @seregpie/bron-kerbosch
+{ UndirectedGraph } from graphology
+
+connections := getLines(input).map .split('-') as [string, string]
+computers .= uniq flatten connections
+graph := new UndirectedGraph
+
+computers.map (pc) => graph.addNode pc
+connections.map [a, b] => graph.addEdge a, b
+
+triples := uniq computers.flatMap (pc) => 
+  neighbors := graph.mapNeighbors(pc, &)
+  triples: string[] := []
+  for i of [0...neighbors#-1]
+    for j of [i+1...neighbors#]
+      if graph.hasEdge neighbors[i], neighbors[j]
+        triples.push [neighbors[i], neighbors[j], pc].sort().join ','
+  triples
+
+log len triples.filter & is like /t[a-z]/
+
+cliques := findCliques(connections).sort (a, b) => b.# - a.#
+
+log cliques.0.sort().join ','

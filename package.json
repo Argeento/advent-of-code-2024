@@ -15,6 +15,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@seregpie/bron-kerbosch": "^1.0.1",
     "graphology": "^0.25.4",
     "graphology-library": "^0.8.0",
     "heap": "^0.2.7",
